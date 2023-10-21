@@ -8,15 +8,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tamakiii.tamakiii_sandbox.hello_android_12.ui.theme.Helloandroid12Theme
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -41,12 +40,13 @@ class MainActivity : ComponentActivity() {
 fun Greeting(modifier: Modifier = Modifier) {
     val greetingText = remember { mutableStateOf("Loading...") }
 
-    // Launch a coroutine to execute the binary and capture its output
-    GlobalScope.launch(Dispatchers.IO) {
-        val process = Runtime.getRuntime().exec("/data/local/tmp/hello")
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val output = reader.readLine()
-        greetingText.value = "Hello $output!"
+    LaunchedEffect(key1 = Unit) {
+        withContext(Dispatchers.IO) {
+            val process = Runtime.getRuntime().exec("/data/local/tmp/hello")
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = reader.readLine()
+            greetingText.value = "Hello $output!"
+        }
     }
 
     Text(
