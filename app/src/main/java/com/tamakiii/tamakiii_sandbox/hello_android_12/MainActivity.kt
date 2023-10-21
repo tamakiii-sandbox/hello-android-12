@@ -36,16 +36,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
     val greetingText = remember { mutableStateOf("Loading...") }
 
     LaunchedEffect(key1 = Unit) {
         withContext(Dispatchers.IO) {
-            val process = Runtime.getRuntime().exec("/data/local/tmp/hello")
-            val reader = BufferedReader(InputStreamReader(process.inputStream))
-            val output = reader.readLine()
-            greetingText.value = "Hello $output!"
+            try {
+                val process = Runtime.getRuntime().exec("/data/local/tmp/hello")
+                val reader = BufferedReader(InputStreamReader(process.inputStream))
+                val output = reader.readLine()
+                greetingText.value = "Hello $output!"
+            } catch (e: Exception) {
+                // Handle exception by updating greetingText.value
+                greetingText.value = e.message ?: "An error occurred"
+            }
         }
     }
 
