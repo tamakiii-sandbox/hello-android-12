@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.tamakiii.tamakiii_sandbox.hello_android_12"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.tamakiii.tamakiii_sandbox.hello_android_12"
-        minSdk = 33
-        targetSdk = 33
+        minSdk = 32
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
