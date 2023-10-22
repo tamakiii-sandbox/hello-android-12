@@ -1,2 +1,4 @@
+*/.cxx/
 /.gradle/
 /app/build/
+/bin/dist/

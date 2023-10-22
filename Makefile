@@ -7,7 +7,7 @@ check-requirements:
 	type gradle && gradle --version
 
 build:
-	gradle build
+	gradle build --info
 
 test:
 	gradle test

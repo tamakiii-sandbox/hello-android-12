@@ -1,6 +1,9 @@
 .PHONY: help devices install
 
-SERIAL := $(shell adb devices | head -2 | tail -1 | awk '{ print $$1 }')
+export ANDROID_SERIAL ?= $(shell adb devices | head -2 | tail -1 | awk '{ print $$1 }')
+
+APPLICATION_ID := com.tamakiii.tamakiii_sandbox.hello_android_12
+INTENT := $(APPLICATION_ID)/$(APPLICATION_ID).MainActivity
 
 help:
 	@cat $(firstword $(MAKEFILE_LIST))
@@ -9,7 +12,10 @@ devices:
 	adb devices -l
 
 install: app/build/outputs/apk/debug/app-debug.apk
-	adb -s $(SERIAL) install -r $<
+	adb -s $(ANDROID_SERIAL) install -r $<
+
+start:
+	adb -s $(ANDROID_SERIAL) shell am start --activity-clear-top -n $(INTENT)
 
 
 # global options:
