@@ -1,4 +1,6 @@
 */.cxx/
 /.gradle/
+/libs/
+/obj/
 /app/build/
 /bin/dist/
