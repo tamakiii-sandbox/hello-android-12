@@ -20,9 +20,16 @@ import java.io.InputStreamReader
 
 class MainActivity : ComponentActivity() {
 
+    companion object {
+        init {
+            System.loadLibrary("hello")
+        }
+    }
+
+    external fun getMessage(): String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        copyBinaryToExecutableLocation()
         setContent {
             Helloandroid12Theme {
                 // A surface container using the 'background' color from the theme
@@ -30,43 +37,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting()
+                    Greeting(getMessage())
                 }
             }
         }
-    }
-
-    private fun copyBinaryToExecutableLocation() {
-        val assetManager = assets
-        val inputStream = assetManager.open("hello")  // Assume binary is named "hello"
-        val outFile = File(filesDir, "hello")
-        val outputStream = FileOutputStream(outFile)
-        inputStream.copyTo(outputStream)
-        inputStream.close()
-        outputStream.flush()
-        outputStream.close()
-        outFile.setExecutable(true)
     }
 
     @Composable
-    fun Greeting(modifier: Modifier = Modifier) {
-        var greetingText by remember { mutableStateOf("Loading...") }
-
-        LaunchedEffect(key1 = Unit) {
-            withContext(Dispatchers.IO) {
-                try {
-                    val process = Runtime.getRuntime().exec("${filesDir}/hello")
-                    val reader = BufferedReader(InputStreamReader(process.inputStream))
-                    val output = reader.readLine()
-                    greetingText = "# $output"
-                } catch (e: Exception) {
-                    greetingText = e.message ?: "An error occurred"
-                }
-            }
-        }
-
+    fun Greeting(name: String, modifier: Modifier = Modifier) {
         Text(
-            text = greetingText,
+            text = name,
             modifier = modifier
         )
     }
@@ -75,7 +55,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun GreetingPreview() {
         Helloandroid12Theme {
-            Greeting()
+            Greeting("Loading")
         }
     }
 }
